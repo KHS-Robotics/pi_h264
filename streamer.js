@@ -7,9 +7,9 @@ function start(socket){
 console.log("==>>>>>start streaming")
 
 var proc=spawn("ffmpeg",[
-	"-s","512x288",
+	"-s","800x450",
 	"-re",
-	"-framerate","30",
+	"-framerate","24",
 	//"-pix_fmt","yuv420p",//"yuv420p",//yuyv422 
 	"-i","/dev/video0",
 	// "-c:v","h264_mmal",
