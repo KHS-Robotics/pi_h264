@@ -76,6 +76,3 @@ var proc=spawn("ffmpeg",[
 	])
 ```
 With -vf option (video filter) you can write text, time, etc on video frame, encoded in h264!
-
-## Client (html)
-Open page http://raspberry_ip:8080 
