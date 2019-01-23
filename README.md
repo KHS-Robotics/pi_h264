@@ -25,54 +25,10 @@ npm start
 ```
 Open http://your-raspberry-pi's-ip:8080 to view the stream.
 
+## Configuration
+See [config.json](https://github.com/Ernie3/pi_h264/blob/master/config.json).
+
 ## Description
 In the browser, it uses broadway h264 software decoder to decode NAL h264 packets and rendering decoded frame to html canvas.
 For receive NAL h264 baseline packets from the server (Raspberry Pi) it uses a websocket over socket.io.
 On the server it uses the speciefied raspberry pi camera (raspivid or USB) to get NAL baseline h264 packets from spawned process and send it over socket.io.  
-
-## Server (Node.js)
-Spawn raspivid to get h264 stream from Raspberry Pi built-in camera port:
-```
-var proc = spawn('raspivid', [
-					'-t', '0',
-					'-o', '-',// out h264 to std out
-					"-n",
-					'-w', 640,
-					'-h', 480,
-					'-fps', 30,
-					'-pf', "baseline"//only accepted profile for decoder
-					]);
-```
-
-Spawn ffmpeg to get h264 stream from Raspberry Pi USB camera:
-```
-var proc=spawn("ffmpeg",[
-	"-s","640x480",
-	"-re",
-	"-framerate","24",
-	//"-pix_fmt","yuv420p",//"yuv420p",//yuyv422 
-	"-i","/dev/video0",
-	// "-c:v","h264_mmal",
-	// "-i","/home/pi/360.mp4",
-	"-c:v","libx264",
-	"-b:v","1M",
-	//"-s","1920x1080",
-	"-an",
-	"-profile:v","baseline",//baseline
-	//"-vf","drawtext='fontfile=/home/pi/ffmpeg/freefont/FreeSans.ttf:text=%{localtime\}':fontsize=50:fontcolor=yellow@1:box=1:boxcolor=red@0.9:x=(w-tw)/2:y=10",
-	"-loglevel","error",
-	"-stats",
-	"-tune","zerolatency",
-	"-f","h264",
-	"-pix_fmt","yuv420p",
-	"-preset","ultrafast",
-	//"-reset_timestamps", "1",
-	//"-movflags","isml+empty_moov+faststart",//+faststart//"frag_keyframe+empty_moov",
-	//"-fflags","nobuffer",
-	//"-frag_duration","5",
-	"-y",
-	//"cam_video.mp4"
-	"-"
-	])
-```
-With -vf option (video filter) you can write text, time, etc on video frame, encoded in h264!
