@@ -3,29 +3,19 @@
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/socket.io.min.js"></script>
 
-    <!-- h264 decoder scripts -->
+    <!-- H.264 Decoder Scripts -->
     <script type="text/javascript" src="broadway/Decoder.js"></script>
     <script type="text/javascript" src="broadway/YUVCanvas.js"></script>
     <script type="text/javascript" src="broadway/Player.js"></script>
 
-
-
   </header>
 
-<body onload="initPage()">
-This is simple html page by Raspberry Pi<p/>
-<input type="button" onclick="startVideo()" value="Start"></input>
-<input type="button" onclick="stopVideo()" value="Stop"></input>
-<p/>
+  <body onload="initPage(); startVideo()" onunload="stopVideo()">
+    <!-- <p>Raspberry Pi H.264 Decoder</p>
+    <input type="button" onclick="startVideo()" value="Start"></input>
+    <input type="button" onclick="stopVideo()" value="Stop"></input> -->
 
-<p/>
-<div id="fps_id">0 fps</div>
-<div id="canvas_container_id">XX_CANVAS_VIDEO_XX<br/></div>
-<p>
-<script>
-
-</script>
-  <p/>
-</body>
+    <div id="fps_id">0 fps</div>
+    <div id="canvas_container_id"></div>
+  </body>
 </html>
-
