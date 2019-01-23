@@ -4,6 +4,9 @@ var netInt=os.networkInterfaces()
 var fs=require("fs")
 var streamer=require("./streamer.js")
 //var WebSocket=require("ws")
+const config = require('./config.json');
+
+console.log("Starting server on +:" + config.port);
 
 var server=http.createServer(function(req,res){
 	console.log("==>new connection: "+req.connection.remoteAddress+", url: "+req.url)
@@ -11,6 +14,7 @@ var server=http.createServer(function(req,res){
 	var filename=req.url=="/"?"/index.html":req.url
 	var method=req.method.toLowerCase()
 	//console.log("==>method: "+method)
+	
 
 if(method=="get"&&req.url!="/videostream.mp4"){
 	var file=fs.createReadStream("www"+filename)
@@ -23,7 +27,7 @@ if(method=="get"&&req.url!="/videostream.mp4"){
 		console.log("==>video stream request....")
 	}//videostream
 
-}).listen(8080)
+}).listen(config.port)
 
 var stream
 

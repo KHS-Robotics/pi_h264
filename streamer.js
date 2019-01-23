@@ -6,35 +6,41 @@ const NALseparator    = new Buffer([0,0,0,1]);//NAL break
 function start(socket){
 console.log("==>>>>>start streaming")
 
-var proc=spawn("ffmpeg",[
-	"-s","640x480",
-	"-re",
-	"-framerate","24",
-	//"-pix_fmt","yuv420p",//"yuv420p",//yuyv422 
-	"-i","/dev/video0",
-	// "-c:v","h264_mmal",
-	// "-i","/home/pi/360.mp4",
-	"-c:v","libx264",
-	"-b:v","1M",
-	//"-s","1920x1080",
-	"-an",
-	"-profile:v","baseline",//baseline
-	//"-vf","drawtext='fontfile=/home/pi/ffmpeg/freefont/FreeSans.ttf:text=%{localtime\}':fontsize=50:fontcolor=yellow@1:box=1:boxcolor=red@0.9:x=(w-tw)/2:y=10",
-	"-loglevel","error",
-	"-stats",
-	"-tune","zerolatency",
-	"-f","h264",
-	"-pix_fmt","yuv420p",
-	"-preset","ultrafast",
-	//"-reset_timestamps", "1",
-	//"-movflags","isml+empty_moov+faststart",//+faststart//"frag_keyframe+empty_moov",
-	//"-fflags","nobuffer",
-	//"-frag_duration","5",
-	"-y",
-	//"cam_video.mp4"
-	"-"
+const config = require('./config.json');
+console.log("CONFIGURATION", config);
+
+if(config.usb) {
+	var proc=spawn("ffmpeg",[
+		"-s",config.width+"x"+config.height,
+		"-re",
+		"-framerate",config.framerate,
+		//"-pix_fmt","yuv420p",//"yuv420p",//yuyv422 
+		"-i",config.device,
+		// "-c:v","h264_mmal",
+		// "-i","/home/pi/360.mp4",
+		"-c:v","libx264",
+		"-b:v","1M",
+		//"-s","1920x1080",
+		"-an",
+		"-profile:v","baseline",//baseline
+		//"-vf","drawtext='fontfile=/home/pi/ffmpeg/freefont/FreeSans.ttf:text=%{localtime\}':fontsize=50:fontcolor=yellow@1:box=1:boxcolor=red@0.9:x=(w-tw)/2:y=10",
+		"-loglevel","error",
+		"-stats",
+		"-tune","zerolatency",
+		"-f","h264",
+		"-pix_fmt","yuv420p",
+		"-preset","ultrafast",
+		//"-reset_timestamps", "1",
+		//"-movflags","isml+empty_moov+faststart",//+faststart//"frag_keyframe+empty_moov",
+		//"-fflags","nobuffer",
+		//"-frag_duration","5",
+		"-y",
+		//"cam_video.mp4"
+		"-"
 	])
-    // var proc = spawn('raspivid', [//work!
+}
+else if(config.raspivid) {
+	// var proc = spawn('raspivid', [//work!
     // 					'-t', '0',
     // 					'-o', '-',
     // 					"-n",
@@ -42,7 +48,11 @@ var proc=spawn("ffmpeg",[
     // 					'-h', 360,
     // 					'-fps', 30,
     // 					'-pf', "baseline"//'baseline'
-    // 					]);
+    // 					]);	
+}
+else {
+	throw Error("Please specify either usb or raspivid in config.json!")
+}
 
 	var rawstream=proc.stdout.pipe(new Split(NALseparator))
 	
@@ -66,7 +76,17 @@ var proc=spawn("ffmpeg",[
 
 
 	proc.stderr.on("data",function(data){
+		const str = data.toString();
 		console.log("==>sdterr: "+data.toString())
+
+		// this is a hack currently to handle if
+		// multiple connections occurr which causes
+		// stream to go black. Systemctl will handle
+		// the automatic restart of this service.
+		if(str.includes("Device or resource busy")) {
+			console.log("Device busy... exiting program.")
+			process.exit(1);
+		}
 	})//on error
 
 	proc.on("close",function(code){

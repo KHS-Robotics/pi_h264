@@ -1,0 +1,14 @@
+[Unit]
+Description=H264 Server
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /home/pi/pi_h264/server.js
+WorkingDirectory=/home/pi/pi_h264
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target

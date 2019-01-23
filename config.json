@@ -1,0 +1,9 @@
+{
+    "port": 9001,
+    "usb": true,
+    "raspivid": false,
+    "framerate": "24",
+    "width": "640",
+    "height": "480",
+    "device": "/dev/video0"
+}
