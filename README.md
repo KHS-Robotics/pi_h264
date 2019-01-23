@@ -3,10 +3,10 @@ based on [broadway](https://github.com/mbebenita/Broadway)
 
 ## Prerequisites
 1. [Node.js](https://www.w3schools.com/nodejs/nodejs_raspberrypi.asp)
-2. FFMPEG v3.3 or possibly greater (this has only been tested with specifically v3.3.9)
-3. USB Camera or Camera for built in camera port
+2. If you're using a USB camera, you need FFMPEG v3.3 or greater (FYI, this has only been tested with v3.3.9)
+3. USB Camera (uses ffmpeg) or Camera for built in camera port (uses raspivid)
 
-## Help Installing FFMPEG v3.3
+## Help Installing FFMPEG v3.3 on the Pi
 1. Append `http://www.deb-multimedia.org stretch main non-free` to `/etc/apt/sources.list` via `sudo sed -i '$a deb http://www.deb-multimedia.org stretch main non-free' /etc/apt/sources.list`.
 2. Download deb-multimedia-keyring package via `wget http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb`
 3. Install package via `sudo dpkg -i deb-multimedia-keyring_2016.8.1_all.deb`
@@ -33,15 +33,15 @@ On the server it uses the speciefied raspberry pi camera (raspivid or USB) to ge
 ## Server (Node.js)
 Spawn raspivid to get h264 stream from Raspberry Pi built-in camera port:
 ```
-    var proc = spawn('raspivid', [
-    					'-t', '0',
-    					'-o', '-',// out h264 to std out
-    					"-n",
-    					'-w', 640,
-    					'-h', 480,
-    					'-fps', 30,
-    					'-pf', "baseline"//only accepted profile for decoder
-    					]);
+var proc = spawn('raspivid', [
+					'-t', '0',
+					'-o', '-',// out h264 to std out
+					"-n",
+					'-w', 640,
+					'-h', 480,
+					'-fps', 30,
+					'-pf', "baseline"//only accepted profile for decoder
+					]);
 ```
 
 Spawn ffmpeg to get h264 stream from Raspberry Pi USB camera:
