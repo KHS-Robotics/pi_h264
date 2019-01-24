@@ -1,6 +1,8 @@
-<html>
+<!doctype html>
   <header>
     <title>Raspberry Pi - H.264 Stream</title>
+    
+    <!-- Main app and Socket.io scripts -->
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/socket.io.min.js"></script>
 
@@ -11,7 +13,7 @@
 
   </header>
 
-  <body onload="initPage(); startVideo()" onunload="stopVideo()">
+  <body onload="initPage(); startVideo();" onunload="stopVideo();">
     <!-- <p>Raspberry Pi H.264 Decoder</p>
     <input type="button" onclick="startVideo()" value="Start"></input>
     <input type="button" onclick="stopVideo()" value="Stop"></input> -->

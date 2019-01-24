@@ -9,7 +9,7 @@ const config = require('./config.json');
 console.log("Starting server on +:" + config.port);
 
 var server=http.createServer(function(req,res){
-	console.log("==>new connection: "+req.connection.remoteAddress+", url: "+req.url)
+	console.log("==> new connection: "+req.connection.remoteAddress+", url: "+req.url)
 	//res.end("Hi from Raspberry!")
 	var filename=req.url=="/"?"/index.html":req.url
 	var method=req.method.toLowerCase()
@@ -24,7 +24,7 @@ if(method=="get"&&req.url!="/videostream.mp4"){
 	file.pipe(res)
 }//if no videostream
 	else if(method=="get"&&req.url=="/videostream.mp4"){
-		console.log("==>video stream request....")
+		console.log("==> video stream request")
 	}//videostream
 
 }).listen(config.port)
@@ -42,12 +42,12 @@ io.on('connection', function (socket) {
   })
 
   socket.on("start_stream",function(data){
-  	console.log("==>start_stream")
+  	console.log("==> start_stream")
   	startStream(socket)
   })//start stream
 
   socket.on("stop_stream",function(data){
-  	console.log("==>stop_stream")
+  	console.log("==> stop_stream")
   	stopStream()
   })//start stream
 
@@ -56,11 +56,11 @@ io.on('connection', function (socket) {
 
 
 function startStream(socket){
-	console.log("==>starting stream...")
+	console.log("==> starting stream")
 	stream=new streamer.start(socket)
 }//startStream
 function stopStream(socket){
-	console.log("==>stoping stream...")
+	console.log("==> stoping stream")
 	try{
 		stream.kill()
 	}catch(err){console.log(err)}

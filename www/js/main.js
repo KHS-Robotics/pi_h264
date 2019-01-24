@@ -82,11 +82,11 @@ setInterval(function(){
 }//initPage
 
 function startVideo(){
-	console.log("==>startVideo..")
+	console.log("==> startVideo")
 	socket.emit("start_stream",{action:"start_stream"})
 }//startVideo
 
 function stopVideo(){
-	console.log("==>stopVideo")
+	console.log("==> stopVideo")
 	socket.emit("stop_stream",{action:"stop_stream"})
 }//stopVideo

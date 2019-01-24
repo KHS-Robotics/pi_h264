@@ -28,7 +28,5 @@ Open http://your-raspberry-pi's-ip:8080 to view the stream.
 ## Configuration
 See [config.json](https://github.com/Ernie3/pi_h264/blob/master/config.json).
 
-## Description
-In the browser, it uses broadway h264 software decoder to decode NAL h264 packets and rendering decoded frame to html canvas.
-For receive NAL h264 baseline packets from the server (Raspberry Pi) it uses a websocket over socket.io.
-On the server it uses the speciefied raspberry pi camera (raspivid or USB) to get NAL baseline h264 packets from spawned process and send it over socket.io.  
+## Technical Description
+The client (web browser) uses broadway (h264 software decoder) to decode NAL h264 packets and rendering the decoded frames to the html canvas. For receiving NAL h264 baseline packets from the server (Raspberry Pi), the client uses a websocket using socket.io. On the server it uses the speciefied Raspberry Pi camera (raspivid or USB) to get NAL baseline h264 packets from the spawned process (either raspivid or ffmpeg) and send it over the websocket to the client.  

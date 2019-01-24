@@ -2,8 +2,8 @@
     "port": 9001,
     "usb": true,
     "raspivid": false,
-    "framerate": "24",
-    "width": "640",
-    "height": "480",
+    "fps": 24,
+    "width": 360,
+    "height": 240,
     "device": "/dev/video0"
 }

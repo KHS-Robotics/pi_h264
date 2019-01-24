@@ -4,7 +4,7 @@ var fs=require("fs")
 const NALseparator    = new Buffer([0,0,0,1]);//NAL break
 
 function start(socket){
-console.log("==>>>>>start streaming")
+console.log("==> starting stream")
 
 const config = require('./config.json');
 console.log("CONFIGURATION", config);
@@ -13,7 +13,7 @@ if(config.usb) {
 	var proc=spawn("ffmpeg",[
 		"-s",config.width+"x"+config.height,
 		"-re",
-		"-framerate",config.framerate,
+		"-framerate",config.fps+"",
 		//"-pix_fmt","yuv420p",//"yuv420p",//yuyv422 
 		"-i",config.device,
 		// "-c:v","h264_mmal",
@@ -40,15 +40,15 @@ if(config.usb) {
 	])
 }
 else if(config.raspivid) {
-	// var proc = spawn('raspivid', [//work!
-    // 					'-t', '0',
-    // 					'-o', '-',
-    // 					"-n",
-    // 					'-w', 640,
-    // 					'-h', 360,
-    // 					'-fps', 30,
-    // 					'-pf', "baseline"//'baseline'
-    // 					]);	
+	var proc = spawn('raspivid', [
+    					'-t', '0',
+    					'-o', '-',
+    					"-n",
+    					'-w', config.width,
+    					'-h', config.height,
+    					'-fps', config.fps,
+    					'-pf', "baseline"//'baseline'
+    					]);	
 }
 else {
 	throw Error("Please specify either usb or raspivid in config.json!")
@@ -76,14 +76,15 @@ else {
 
 
 	proc.stderr.on("data",function(data){
-		const str = data.toString();
-		console.log("==>sdterr: "+data.toString())
+		let d = data.toString();
+		console.log("==> sdterr: " + d)
 
-		// this is a hack currently to handle if
-		// multiple connections occurr which causes
-		// stream to go black. Systemctl will handle
-		// the automatic restart of this service.
-		if(str.includes("Device or resource busy")) {
+		// This currently is a hack to handle if
+		// multiple connections occur which causes
+		// stream to go black indefinitely.
+		// Systemctl will handle the automatic 
+		// restart of this service.
+		if(d.includes("Device or resource busy")) {
 			console.log("Device busy... exiting program.")
 			process.exit(1);
 		}
