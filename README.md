@@ -23,7 +23,7 @@ cd pi_h264
 npm install
 npm start
 ```
-Open http://your-raspberry-pi's-ip:8080 to view the stream.
+Open http://your-raspberry-pi's-ip:9001 to view the stream.
 
 ## Configuration
 See [config.json](https://github.com/Ernie3/pi_h264/blob/master/config.json).
