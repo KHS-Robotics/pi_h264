@@ -60,20 +60,16 @@ function start(socket) {
 		let d = data.toString();
 		console.log("==> sdterr: " + d)
 
-		// This currently is a hack to handle if
-		// multiple connections occur which causes
-		// stream to go black indefinitely.
-		// Systemctl will handle the automatic 
-		// restart of this service.
+		// Ouch
 		if(d.includes("Device or resource busy")) {
 			console.log("Device busy... exiting program.")
 			process.exit(1);
 		}
-	})//on error
+	})
 
 	proc.on("close",function(code){
 		console.log("process exit with code: "+code)
-	})//on close
+	})
 
 	return proc
 }//start
