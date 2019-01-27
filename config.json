@@ -1,7 +1,5 @@
 {
     "port": 9001,
-    "usb": true,
-    "raspivid": false,
     "device": "/dev/video0",
     "fps": 24,
     "width": 360,

@@ -3,17 +3,17 @@ based on [broadway](https://github.com/mbebenita/Broadway)
 
 ## Prerequisites
 1. [Node.js](https://www.w3schools.com/nodejs/nodejs_raspberrypi.asp)
-2. If you're using a USB camera, you need FFMPEG v3.3 or greater (FYI, this has only been tested with v3.3.9)
-3. USB Camera (uses ffmpeg) or Camera for built in camera port (uses raspivid)
+2. FFmpeg v3.3 or greater (FYI, this has only been tested with v3.3.9)
+3. a USB Camera
 
 ## Help Installing FFMPEG v3.3 on the Pi
 1. Append `http://www.deb-multimedia.org stretch main non-free` to `/etc/apt/sources.list` via `sudo sed -i '$a deb http://www.deb-multimedia.org stretch main non-free' /etc/apt/sources.list`.
 2. Download deb-multimedia-keyring package via `wget http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb`
-3. Install package via `sudo dpkg -i deb-multimedia-keyring_2016.8.1_all.deb`
+3. Install package via `sudo dpkg -i deb-multimedia-keyring_2016.8.1_all.deb` (you can `rm deb-multimedia-keyring_2016.8.1_all.deb` after this step).
 4. `sudo apt-get update`
 5. `sudo apt-get install -y ffmpeg`
 	or if you already have ffmpeg installed run
-	`sudo apt-get dist-upgrade`
+	`sudo apt-get install --only-upgrade -y ffmpeg`
 6. Run `ffmpeg -version` to verify you have v3.3 installed
 
 ## Installing pi_h264

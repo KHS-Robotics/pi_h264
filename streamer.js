@@ -1,15 +1,14 @@
 var spawn = require('child_process').spawn;
 const Split = require('stream-split');
-var fs=require("fs")
-const NALseparator    = new Buffer([0,0,0,1]);//NAL break
+var fs = require("fs")
+const NALseparator = new Buffer([0,0,0,1]);//NAL break
 
-function start(socket){
-console.log("==> starting stream")
+function start(socket) {
+	console.log("==> starting stream")
 
-const config = require('./config.json');
-console.log("CONFIGURATION", config);
+	const config = require('./config.json');
+	console.log("CONFIGURATION =>", config);
 
-if(config.usb) {
 	var proc=spawn("ffmpeg",[
 		"-s",config.width+"x"+config.height,
 		"-re",
@@ -35,41 +34,26 @@ if(config.usb) {
 		//"cam_video.mp4"
 		"-"
 	])
-}
-else if(config.raspivid) {
-	var proc = spawn('raspivid', [
-    					'-t', '0',
-    					'-o', '-',
-    					"-n",
-    					'-w', config.width,
-    					'-h', config.height,
-    					'-fps', config.fps,
-    					'-pf', "baseline"
-    					]);	
-}
-else {
-	throw Error("Please specify either usb or raspivid in config.json!")
-}
 
 	var rawstream=proc.stdout.pipe(new Split(NALseparator))
-	
+
 	//read data from file
-	//ffmpeg -i 360.mp4 -c:v h264 -vprofile baseline -b:v 1M -s 640x360 -y baseline.h264
+	//ffmpeg -i 360.mp4 -c:v h264 -vprofile baseline -b:v config.bitrate -s 640x360 -y baseline.h264
 	//var readStream=fs.createReadStream("/home/pi/baselinepi2.h264")
 	//var rawstream=readStream.pipe(new Split(NALseparator))
 
 	rawstream.on("data",function(data){
 		//broadcast(Buffer.concat([NALseparator, data]))
-		 socket.emit("nal_packet",Buffer.concat([NALseparator, data]))
+			socket.emit("nal_packet",Buffer.concat([NALseparator, data]))
 		//socket.send(Buffer.concat([NALseparator, data]))
 	})
 
 
-// function broadcast(data){
-// 	stream.clients.forEach(function(socket) {
-// 		socket.send(data,{ binary: true})
-// 	})//clients
-// }//broadcast
+	// function broadcast(data){
+	// 	stream.clients.forEach(function(socket) {
+	// 		socket.send(data,{ binary: true})
+	// 	})//clients
+	// }//broadcast
 
 
 	proc.stderr.on("data",function(data){
@@ -91,7 +75,7 @@ else {
 		console.log("process exit with code: "+code)
 	})//on close
 
-return proc
+	return proc
 }//start
 
 exports.start=start
