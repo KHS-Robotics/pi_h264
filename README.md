@@ -3,7 +3,7 @@ based on [broadway](https://github.com/mbebenita/Broadway)
 
 ## Prerequisites
 1. [Node.js](https://www.w3schools.com/nodejs/nodejs_raspberrypi.asp)
-2. FFmpeg v3.3 or greater (FYI, this has only been tested with v3.3.9)
+2. [FFmpeg](https://www.ffmpeg.org/) v3.3 or greater (FYI, this has only been tested with v3.3.9)
 3. a USB Camera
 
 ## Help Installing FFMPEG v3.3 on the Pi
