@@ -55,7 +55,15 @@ io.on('connection', function (socket) {
 })//io
 
 
-function startStream(socket){
+var currentlyStreaming = false;
+function startStream(socket) {
+	// if stream is already running
+	// stop that one for new one
+	if(currentlyStreaming) {
+		stopStream(socket);
+	}
+	currentlyStreaming = true;
+
 	console.log("==> starting stream")
 	stream=new streamer.start(socket)
 }//startStream
