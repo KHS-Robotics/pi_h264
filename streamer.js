@@ -14,13 +14,10 @@ if(config.usb) {
 		"-s",config.width+"x"+config.height,
 		"-re",
 		"-framerate",config.fps+"",
-		//"-pix_fmt","yuv420p",//"yuv420p",//yuyv422 
 		"-i",config.device,
-		// "-c:v","h264_mmal",
 		// "-i","/home/pi/360.mp4",
 		"-c:v","libx264",
-		"-b:v","1M",
-		//"-s","1920x1080",
+		"-b:v",config.bitrate,
 		"-an",
 		"-profile:v","baseline",//baseline
 		//"-vf","drawtext='fontfile=/home/pi/ffmpeg/freefont/FreeSans.ttf:text=%{localtime\}':fontsize=50:fontcolor=yellow@1:box=1:boxcolor=red@0.9:x=(w-tw)/2:y=10",
@@ -47,7 +44,7 @@ else if(config.raspivid) {
     					'-w', config.width,
     					'-h', config.height,
     					'-fps', config.fps,
-    					'-pf', "baseline"//'baseline'
+    					'-pf', "baseline"
     					]);	
 }
 else {

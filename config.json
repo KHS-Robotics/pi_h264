@@ -2,8 +2,9 @@
     "port": 9001,
     "usb": true,
     "raspivid": false,
+    "device": "/dev/video0",
     "fps": 24,
     "width": 360,
     "height": 240,
-    "device": "/dev/video0"
+    "bitrate": "600K"
 }
