@@ -1,7 +1,7 @@
 var spawn = require('child_process').spawn;
 const Split = require('stream-split');
 var fs = require("fs")
-const NALseparator = new Buffer([0,0,0,1]);//NAL break
+const NALseparator = Buffer.from([0,0,0,1]);//NAL break
 
 function start(socket) {
 	console.log("==> starting stream")
