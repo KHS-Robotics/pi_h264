@@ -14,11 +14,10 @@
   </header>
 
   <body onload="initPage(); startVideo();" onunload="stopVideo();">
-    <!-- <p>Raspberry Pi H.264 Decoder</p>
-    <input type="button" onclick="startVideo()" value="Start"></input>
-    <input type="button" onclick="stopVideo()" value="Stop"></input> -->
-
+    <!-- Display frame rate -->
     <div id="fps_id">0 fps</div>
+    
+    <!-- Display H.264 Stream -->
     <div id="canvas_container_id"></div>
   </body>
 </html>
