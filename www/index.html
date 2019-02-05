@@ -1,6 +1,8 @@
 <!doctype html>
   <header>
     <title>Raspberry Pi - H.264 Stream</title>
+
+    <link type="text/css" href="style.css">
     
     <!-- Main app and Socket.io scripts -->
     <script type="text/javascript" src="js/main.js"></script>
@@ -11,13 +13,108 @@
     <script type="text/javascript" src="broadway/YUVCanvas.js"></script>
     <script type="text/javascript" src="broadway/Player.js"></script>
 
+    <script>
+      // V4L2-CTL REST API info
+      var CAMERA_SETTINGS_API_PROTOCOL = 'http';
+      var CAMERA_SETTINGS_API_HOST = '172.20.10.4';
+      var CAMERA_SETTINGS_API_PORT = 3000;
+      var CAMERA_SETTINGS_API_BASE_URL = CAMERA_SETTINGS_API_PROTOCOL + '://' + CAMERA_SETTINGS_API_HOST + ':' + CAMERA_SETTINGS_API_PORT + '/';
+      var DEVICE_ID = 0;
+
+      var toggleButton = document.getElementById("toggle_button");
+      var options = document.getElementById("options");
+
+      console.log("Camera Settings API Base URL: ", CAMERA_SETTINGS_API_BASE_URL);
+      console.log("Using /dev/video" + DEVICE_ID);
+
+      function makeRequest(url, method) {
+        return new Promise((resolve, reject) => {
+          fetch(url, { method: method })
+            .then(response => {
+              response.json()
+                .then(json => resolve(json))
+                .catch(error => reject(error));
+            })
+            .catch(error => reject(error))
+        });
+      }
+
+      function getMinValue(setting) {
+        return makeRequest(CAMERA_SETTINGS_API_BASE_URL + setting +'/min_value', 'GET');
+      }
+
+      function getMaxValue(setting) {
+        return makeRequest(CAMERA_SETTINGS_API_BASE_URL + setting +'/max_value', 'GET');
+      }
+
+      function getSetting(deviceId, setting) {
+        return makeRequest(CAMERA_SETTINGS_API_BASE_URL + setting + '/' + deviceId, 'GET');
+      }
+
+      function setSetting(deviceId, setting, value) {
+        return makeRequest(CAMERA_SETTINGS_API_BASE_URL + setting + '/' + deviceId + '/' + value, 'POST');
+      }
+
+      function getSettings() {
+        return makeRequest(CAMERA_SETTINGS_API_BASE_URL +'settings', 'GET');
+      }
+
+      function toggleOptions() {
+        var options = document.getElementById("options");
+        var toggleButton = document.getElementById("toggle_button");
+
+        if (options.style.display === "none") {
+          options.style.display = "block";
+          toggleButton.innerHTML = ("Hide Options");
+        } else {
+          options.style.display = "none";
+          toggleButton.innerHTML = ("Show Options");
+        }
+      }
+
+
+      getSettings()
+        .then(settings => {
+          settings.forEach(setting => {
+            getMinValue(setting)
+              .then(response => document.getElementById(setting).min = response.min)
+              .catch(error => console.error(error));
+            getMaxValue(setting)
+              .then(response => document.getElementById(setting).max = response.max)
+              .catch(error => console.error(error));
+            getSetting(DEVICE_ID, setting)
+              .then(control => document.getElementById(setting).value = control.value)
+              .catch(error => console.error(error));
+          });
+        })
+        .catch(error => console.error(error));
+      </script>
   </header>
 
   <body onload="initPage(); startVideo();" onunload="stopVideo();">
-    <!-- Display frame rate -->
     <div id="fps_id">0 fps</div>
-    
-    <!-- Display H.264 Stream -->
     <div id="canvas_container_id"></div>
+
+    <button id="toggle_button" onclick="toggleOptions()">Hide Options</button>
+    <div id="options">
+        <input type="range" id="brightness" name="brightness" onchange="setSetting(DEVICE_ID, 'brightness', this.value)">
+        <label for="brightness">Brightness</label><br>
+
+        <input type="range" id="contrast" name="contrast" onchange="setSetting(DEVICE_ID, 'contrast', this.value)">
+        <label for="contrast">Contrast</label><br>
+
+        <input type="range" id="exposure_absolute" name="exposure_absolute" onchange="setSetting(DEVICE_ID, 'exposure_absolute', this.value)">
+        <label for="exposure_absolute">Exposure Absolute</label><br>
+
+        <input type="range" id="exposure_auto" name="exposure_auto" onchange="setSetting(DEVICE_ID, 'exposure_auto', this.value)">
+        <label for="exposure_auto">Exposure Auto</label><br>
+
+        <input type="range" id="sharpness" name="sharpness" onchange="setSetting(DEVICE_ID, 'sharpness', this.value)">
+        <label for="sharpness">Sharpness</label><br>
+
+        <input type="range" id="saturation" name="saturation" onchange="setSetting(DEVICE_ID, 'saturation', this.value)">
+        <label for="saturation">Saturation</label><br>
+
+      </div>
   </body>
 </html>
