@@ -2,7 +2,7 @@
   <header>
     <title>Raspberry Pi - H.264 Stream</title>
 
-    <link type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
     
     <!-- Main app and Socket.io scripts -->
     <script type="text/javascript" src="js/main.js"></script>
@@ -63,12 +63,12 @@
         var options = document.getElementById("options");
         var toggleButton = document.getElementById("toggle_button");
 
-        if (options.style.display === "none") {
-          options.style.display = "block";
-          toggleButton.innerHTML = ("Hide Options");
-        } else {
+        if (options.style.display === "block") {
           options.style.display = "none";
           toggleButton.innerHTML = ("Show Options");
+        } else {
+          options.style.display = "block";
+          toggleButton.innerHTML = ("Hide Options");
         }
       }
 
@@ -95,7 +95,7 @@
     <div id="fps_id">0 fps</div>
     <div id="canvas_container_id"></div>
 
-    <button id="toggle_button" onclick="toggleOptions()">Hide Options</button>
+    <button id="toggle_button" onclick="toggleOptions()">Show Options</button>
     <div id="options">
         <input type="range" id="brightness" name="brightness" onchange="setSetting(DEVICE_ID, 'brightness', this.value)">
         <label for="brightness">Brightness</label><br>
