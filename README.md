@@ -14,14 +14,18 @@ node -v
 ```
 
 ## Help Installing FFMPEG v3.3 on the Pi
-1. Append `http://www.deb-multimedia.org stretch main non-free` to `/etc/apt/sources.list` via `sudo sed -i '$a deb http://www.deb-multimedia.org stretch main non-free' /etc/apt/sources.list`.
-2. Download deb-multimedia-keyring package via `wget http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb`
-3. Install package via `sudo dpkg -i deb-multimedia-keyring_2016.8.1_all.deb` (you can `rm deb-multimedia-keyring_2016.8.1_all.deb` after this step).
-4. `sudo apt-get update`
-5. `sudo apt-get install -y ffmpeg`
-	or if you already have ffmpeg installed run
-	`sudo apt-get install --only-upgrade -y ffmpeg`
-6. Run `ffmpeg -version` to verify you have v3.3 installed
+```
+# Add deb-multimedia
+sudo sed -i '$a deb http://www.deb-multimedia.org stretch main non-free' /etc/apt/sources.list
+wget http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb
+sudo dpkg -i deb-multimedia-keyring_2016.8.1_all.deb
+rm deb-multimedia-keyring_2016.8.1_all.deb
+
+sudo apt-get update # run this if you don't have ffmpeg installed 
+sudo apt-get install --only-upgrade -y ffmpeg # run this if you already have ffmpeg installed
+
+ffmpeg -version
+```
 
 ## Installing pi_h264
 ```
