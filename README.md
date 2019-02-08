@@ -6,6 +6,13 @@ based on [broadway](https://github.com/mbebenita/Broadway)
 2. [FFmpeg](https://www.ffmpeg.org/) v3.3 or greater (FYI, this has only been tested with v3.3.9)
 3. a USB Camera
 
+## Help Installing Node.js v10 on the Pi
+```
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+sudo apt-get install -y nodejs
+node -v
+```
+
 ## Help Installing FFMPEG v3.3 on the Pi
 1. Append `http://www.deb-multimedia.org stretch main non-free` to `/etc/apt/sources.list` via `sudo sed -i '$a deb http://www.deb-multimedia.org stretch main non-free' /etc/apt/sources.list`.
 2. Download deb-multimedia-keyring package via `wget http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb`
