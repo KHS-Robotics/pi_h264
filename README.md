@@ -21,8 +21,9 @@ sudo sed -i '$a deb http://www.deb-multimedia.org stretch main non-free' /etc/ap
 wget http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb
 sudo dpkg -i deb-multimedia-keyring_2016.8.1_all.deb
 rm deb-multimedia-keyring_2016.8.1_all.deb
+sudo apt-get update
 
-sudo apt-get update # run this if you don't have ffmpeg installed 
+sudo apt-get install -y ffmpeg # run this if you don't have ffmpeg installed 
 sudo apt-get install --only-upgrade -y ffmpeg # run this if you already have ffmpeg installed
 
 ffmpeg -version
