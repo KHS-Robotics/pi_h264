@@ -29,7 +29,7 @@ Open http://your-raspberry-pi's-ip:9001 to view the stream.
 See [config.json](https://github.com/Ernie3/pi_h264/blob/master/config.json).
 
 ## Controlling Camera Settings
-The stream viewer offers a panel to control the camera's settings. However, to utilize this capability, you must have the [v4l2-ctl-rest-api](https://github.com/Ernie3/v4l2-ctl-rest-api) installed and running. Edit the Camera ID and Host IP in `www/index.html` to match the camera you're using (0 for `/dev/video0` for instance) and the IP of the host running the v4l2-ctl-rest-api (likely the same host/the Pi running `pi_h264`; you can get your Pi's IP via `hostname -I`).
+The stream viewer offers a panel to control the camera's settings. However, to utilize this capability, you must have the [v4l2-ctl-rest-api](https://github.com/Ernie3/v4l2-ctl-rest-api) installed and running on the Pi. Edit the Camera ID  in `www/index.html` to match the camera you're using (0 for `/dev/video0` for instance).
 
 ## Technical Description
 The client (web browser) uses broadway (h264 software decoder) to decode NAL h264 packets and rendering the decoded frames to the html canvas. For receiving NAL h264 baseline packets from the server (Raspberry Pi), the client uses a websocket using socket.io. On the server, it uses the specified USB camera to get NAL baseline h264 packets from ffmpeg and sends it over the websocket to the client.  

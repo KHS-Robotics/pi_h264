@@ -16,11 +16,11 @@
     <script>
       // V4L2-CTL REST API info
       var CAMERA_SETTINGS_API_PROTOCOL = 'http';
-      var CAMERA_SETTINGS_API_HOST = '10.43.42.13';
+      var CAMERA_SETTINGS_API_HOST = document.location.hostname;
       var CAMERA_SETTINGS_API_PORT = 3000;
       var CAMERA_SETTINGS_API_BASE_URL = CAMERA_SETTINGS_API_PROTOCOL + '://' + CAMERA_SETTINGS_API_HOST + ':' + CAMERA_SETTINGS_API_PORT + '/';
       var DEVICE_ID = 0;
-
+      
       var toggleButton = document.getElementById("toggle_button");
       var options = document.getElementById("options");
 
