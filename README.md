@@ -9,7 +9,6 @@ based on [broadway](https://github.com/mbebenita/Broadway)
 ## Help Installing Node.js v10 on the Pi
 ```
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-sudo apt-get update
 sudo apt-get install -y nodejs
 node -v
 ```
