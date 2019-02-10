@@ -1,6 +1,6 @@
 var spawn = require('child_process').spawn;
 const Split = require('stream-split');
-var fs = require("fs")
+const fs = require("fs")
 const NALseparator = Buffer.from([0,0,0,1]);//NAL break
 
 function start(socket) {
@@ -13,7 +13,7 @@ function start(socket) {
 		"-s",config.width+"x"+config.height,
 		"-re",
 		"-framerate",config.fps+"",
-		"-i",config.device,
+		"-i",fs.realpathSync(config.device),
 		// "-i","/home/pi/360.mp4",
 		"-c:v","libx264",
 		"-b:v",config.bitrate,
