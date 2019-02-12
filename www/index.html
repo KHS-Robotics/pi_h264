@@ -59,6 +59,14 @@
         return makeRequest(CAMERA_SETTINGS_API_BASE_URL +'settings', 'GET');
       }
 
+      function shutdown() {
+        var prompt = confirm("WARNING! You are about to shutdown this Raspberry Pi.");
+
+        if (prompt == true) {
+          return makeRequest(CAMERA_SETTINGS_API_BASE_URL + 'shutdown', 'POST');
+        }
+      }
+
       function toggleOptions() {
         var options = document.getElementById("options");
         var toggleButton = document.getElementById("toggle_button");
@@ -71,11 +79,40 @@
           toggleButton.innerHTML = ("Hide Options");
         }
       }
-
+      
+      setSetting(DEVICE_ID, "exposure_auto", 3)
+        .catch(error => console.error(error));
 
       getSettings()
         .then(settings => {
           settings.forEach(setting => {
+
+            // Create slider for setting
+            var newInput = document.createElement("input");
+            newInput.name = setting;
+            newInput.id = setting;
+            var inputType = document.createAttribute("type");
+            inputType.value = "range";
+            newInput.setAttributeNode(inputType);
+            newInput.onchange = function() {
+              setSetting(DEVICE_ID, setting, this.value);
+            }
+            document.getElementById('sliders').appendChild(newInput);
+
+            // Add label
+            var newLabel = document.createElement("label");
+            var labelFor = document.createAttribute("for");
+            labelFor.value = setting;
+            newLabel.setAttributeNode(labelFor);
+            var labelText = document.createTextNode("" + setting);
+            newLabel.appendChild(labelText);
+            document.getElementById('sliders').appendChild(newLabel);
+
+            // New Line
+            var newLine = document.createElement("br");
+            document.getElementById('sliders').appendChild(newLine);
+
+            // Configure slider
             getMinValue(setting)
               .then(response => document.getElementById(setting).min = response.min)
               .catch(error => console.error(error));
@@ -85,7 +122,7 @@
             getSetting(DEVICE_ID, setting)
               .then(control => document.getElementById(setting).value = control.value)
               .catch(error => console.error(error));
-          });
+            });
         })
         .catch(error => console.error(error));
       </script>
@@ -97,24 +134,9 @@
 
     <button id="toggle_button" onclick="toggleOptions()">Show Options</button>
     <div id="options">
-        <input type="range" id="brightness" name="brightness" onchange="setSetting(DEVICE_ID, 'brightness', this.value)">
-        <label for="brightness">Brightness</label><br>
-
-        <input type="range" id="contrast" name="contrast" onchange="setSetting(DEVICE_ID, 'contrast', this.value)">
-        <label for="contrast">Contrast</label><br>
-
-        <input type="range" id="exposure_absolute" name="exposure_absolute" onchange="setSetting(DEVICE_ID, 'exposure_absolute', this.value)">
-        <label for="exposure_absolute">Exposure Absolute</label><br>
-
-        <input type="range" id="exposure_auto" name="exposure_auto" onchange="setSetting(DEVICE_ID, 'exposure_auto', this.value)">
-        <label for="exposure_auto">Exposure Auto</label><br>
-
-        <input type="range" id="sharpness" name="sharpness" onchange="setSetting(DEVICE_ID, 'sharpness', this.value)">
-        <label for="sharpness">Sharpness</label><br>
-
-        <input type="range" id="saturation" name="saturation" onchange="setSetting(DEVICE_ID, 'saturation', this.value)">
-        <label for="saturation">Saturation</label><br>
-
+        <div id="sliders"></div>
+        <br>
+        <button onclick="shutdown()">Shutdown</button><br>
       </div>
   </body>
 </html>
