@@ -64,7 +64,6 @@ function startStream(socket) {
 	}
 	currentlyStreaming = true;
 
-	console.log("==> starting stream")
 	stream=new streamer.start(socket)
 }//startStream
 function stopStream(socket){
