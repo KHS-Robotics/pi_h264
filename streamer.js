@@ -1,12 +1,11 @@
-var spawn = require('child_process').spawn;
+const spawn = require('child_process').spawn;
 const Split = require('stream-split');
-const fs = require("fs")
+const fs = require("fs");
+const config = require('./config.json');
 const NALseparator = Buffer.from([0,0,0,1]);//NAL break
 
 function start(socket) {
 	console.log("==> starting stream")
-
-	const config = require('./config.json');
 	console.log("CONFIGURATION =>", config);
 
 	var proc=spawn("ffmpeg",[
@@ -55,10 +54,12 @@ function start(socket) {
 	// 	})//clients
 	// }//broadcast
 
-
 	proc.stderr.on("data",function(data){
 		let d = data.toString();
-		console.log("==> sdterr: " + d)
+
+		if(config.verbose) {
+			console.log("==> stderr: " + d)
+		}
 
 		// Ouch
 		if(d.includes("Device or resource busy")) {
